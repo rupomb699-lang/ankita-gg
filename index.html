@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ankita Mythic AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
+
+body{
+  background:black;
+  color:white;
+  overflow:hidden;
+}
+
+/* VIDEO BG */
+video{
+  position:fixed;
+  width:100%;height:100%;
+  object-fit:cover;
+  z-index:-1;
+  filter:brightness(0.3);
+}
+
+/* MAIN */
+.container{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:20px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+}
+
+.glitch{
+  font-size:40px;
+  color:#ff004f;
+}
+
+/* CHAT */
+.chat{
+  flex:1;
+  overflow-y:auto;
+  margin:20px 0;
+}
+
+.msg{
+  margin:10px 0;
+}
+
+.user{color:#00fff7;}
+.ai{color:#ff004f;}
+
+/* INPUT */
+.inputBox{
+  display:flex;
+}
+
+input{
+  flex:1;
+  padding:10px;
+  background:black;
+  border:1px solid #ff004f;
+  color:white;
+}
+
+button{
+  padding:10px;
+  border:1px solid #ff004f;
+  background:none;
+  color:#ff004f;
+}
+
+button:hover{
+  background:#ff004f;
+  color:black;
+}
+</style>
+</head>
+
+<body>
+
+<video autoplay muted loop>
+  <source src="https://cdn.coverr.co/videos/coverr-gaming-setup-1563/1080p.mp4">
+</video>
+
+<div class="container">
+
+  <div class="header">
+    <h1 class="glitch">ANKITA AI SYSTEM 🤖</h1>
+    <p id="welcome"></p>
+  </div>
+
+  <div class="chat" id="chat"></div>
+
+  <div class="inputBox">
+    <input id="input" placeholder="Type something...">
+    <button onclick="send()">SEND</button>
+  </div>
+
+</div>
+
+<script>
+let user = localStorage.getItem("user") || "Player";
+document.getElementById("welcome").innerText = "Welcome " + user + " ⚡";
+
+function addMsg(text, cls){
+  let div = document.createElement("div");
+  div.className = "msg " + cls;
+  div.innerText = text;
+  document.getElementById("chat").appendChild(div);
+  document.getElementById("chat").scrollTop = 9999;
+}
+
+/* AI LOGIC */
+function aiReply(msg){
+  msg = msg.toLowerCase();
+
+  if(msg.includes("hi") || msg.includes("hello")){
+    return "Hello " + user + " ⚡ Ready to enter Ankita zone?";
+  }
+  if(msg.includes("ankita")){
+    return "Ankita is the ultimate gaming legend 🔥";
+  }
+  if(msg.includes("game")){
+    return "Initializing gaming protocol... 🎮";
+  }
+  if(msg.includes("love")){
+    return "Focus soldier 😏 This is a gaming system.";
+  }
+  return "Processing... Stay focused ⚡";
+}
+
+/* VOICE */
+function speak(text){
+  let speech = new SpeechSynthesisUtterance(text);
+  speech.rate = 1;
+  speech.pitch = 1.2;
+  speech.lang = "en-US";
+  speechSynthesis.speak(speech);
+}
+
+/* SEND */
+function send(){
+  let input = document.getElementById("input");
+  let text = input.value;
+  if(!text) return;
+
+  addMsg("You: " + text, "user");
+  input.value = "";
+
+  setTimeout(()=>{
+    let reply = aiReply(text);
+    addMsg("AI: " + reply, "ai");
+    speak(reply);
+  },700);
+}
+
+/* ENTER KEY */
+document.getElementById("input").addEventListener("keypress", function(e){
+  if(e.key==="Enter") send();
+});
+</script>
+
+</body>
+</html>
